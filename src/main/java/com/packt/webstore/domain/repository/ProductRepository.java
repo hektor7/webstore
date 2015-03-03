@@ -18,4 +18,12 @@ public interface ProductRepository {
 	 * @return list of products
 	 */
 	public List<Product> getAllProducts();
+	
+	/**
+	 * Method that returns a Product from a product's id.
+	 * 
+	 * @param productId product's id
+	 * @return product
+	 */
+	public Product getProductById(String productId);
 }
