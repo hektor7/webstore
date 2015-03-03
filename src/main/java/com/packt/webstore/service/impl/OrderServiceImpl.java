@@ -14,7 +14,7 @@ public class OrderServiceImpl implements OrderService {
 	private ProductRepository productRepository;
 
 	public void processOrder(String productId, int quantity) {
-		Product productById = productRepository.getProductById(productId);
+		Product productById = this.productRepository.getProductById(productId);
 
 		if (productById.getUnitsInStock() < quantity) {
 			throw new IllegalArgumentException(
