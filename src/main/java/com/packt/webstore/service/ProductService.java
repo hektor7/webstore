@@ -1,6 +1,8 @@
 package com.packt.webstore.service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import com.packt.webstore.domain.Product;
 
@@ -20,12 +22,19 @@ public interface ProductService {
 	public List<Product> getAllProducts();
 	
 	/**
-	 * Method that obstains all product from a category.
+	 * Method that obtains all product from a category.
 	 * 
 	 * @param category
-	 * @return list of profuct
+	 * @return list of product
 	 */
 	public List<Product> getProductsByCategory(String category);
+	
+	/**
+	 * Method that obtains a set of products by a filter
+	 * @param filterParams params
+	 * @return set of products
+	 */
+	public Set<Product> getProductsByFilter(Map<String, List<String>> filterParams);
 
 	
 }
