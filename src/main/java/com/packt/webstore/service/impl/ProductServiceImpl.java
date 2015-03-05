@@ -14,9 +14,13 @@ public class ProductServiceImpl implements ProductService {
 
 	@Autowired
 	private ProductRepository productRepository;
-	
+
 	public List<Product> getAllProducts() {
-		return this.productRepository.getAllProducts(); 
+		return this.productRepository.getAllProducts();
+	}
+
+	public List<Product> getProductsByCategory(String category) {
+		return productRepository.getProductsByCategory(category);
 	}
 
 }

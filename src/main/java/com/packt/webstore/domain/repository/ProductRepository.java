@@ -26,4 +26,13 @@ public interface ProductRepository {
 	 * @return product
 	 */
 	public Product getProductById(String productId);
+	
+	/**
+	 * Method that returns a list of products from a category 
+	 * passed as parameter.
+	 * @param category
+	 * @return list of products
+	 */
+	public List<Product> getProductsByCategory(String category);
+	
 }
