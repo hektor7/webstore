@@ -36,5 +36,12 @@ public interface ProductService {
 	 */
 	public Set<Product> getProductsByFilter(Map<String, List<String>> filterParams);
 
+	/**
+	 * It obtains a Product through its id
+	 * @param productId id
+	 * @return a product
+	 */
+	public Product getProductById(String productId);
+
 	
 }
