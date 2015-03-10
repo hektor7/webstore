@@ -76,9 +76,10 @@ public class ProductController {
 		// FIXME: Refactor: Altough this is the book's method, I think isn't a good way
 		List<Product> products = this.productService
 				.getProductsByCategory(category);
+		products.retainAll(this.productService.getProductsBypriceFilter(price));
 		products.retainAll(this.productService
 				.getProductsByManufacturer(manufacturer));
-		products.retainAll(this.productService.getProductsBypriceFilter(price));
+		
 
 		model.addAttribute("products", products);
 		return "products";
