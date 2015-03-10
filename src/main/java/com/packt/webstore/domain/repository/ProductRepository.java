@@ -44,4 +44,19 @@ public interface ProductRepository {
 	 */
 	public Set<Product> getProductsByFilter(Map<String, List<String>> filterParams);
 	
+	/**
+	 * Method that returns a list of products from a manufacturer
+	 * passed as parameter.
+	 * @param manufacturer
+	 * @return list of products
+	 */
+	public List<Product> getProductsByManufacturer(String manufacturer);
+
+	/**
+	 * It returns a list of products by a price range
+	 * @param filterPrice lowest and higher prices
+	 * @return list of products
+	 */
+	public List<Product> getProductsByPriceRange(Map<String, List<String>> filterPrice);
+	
 }

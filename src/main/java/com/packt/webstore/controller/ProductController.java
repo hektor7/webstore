@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.packt.webstore.domain.Product;
 import com.packt.webstore.service.ProductService;
 
 /**
@@ -53,17 +54,34 @@ public class ProductController {
 	public String getProductsByFilter(
 			@MatrixVariable(pathVar = "ByCriteria") Map<String, List<String>> filterParams,
 			Model model) {
-		
+
 		model.addAttribute("products",
 				productService.getProductsByFilter(filterParams));
-		
+
 		return "products";
 	}
-	
+
 	@RequestMapping("/product")
 	public String getProductById(@RequestParam("id") String productId,
 			Model model) {
 		model.addAttribute("product", productService.getProductById(productId));
 		return "product";
 	}
+
+	@RequestMapping("/{category}/{price}")
+	public String filterProducts(@PathVariable("category") String category,
+			@MatrixVariable(pathVar = "price") Map<String, List<String>> price,
+			@RequestParam("manufacturer") String manufacturer, Model model) {
+
+		// FIXME: Refactor: Altough this is the book's method, I think isn't a good way
+		List<Product> products = this.productService
+				.getProductsByCategory(category);
+		products.retainAll(this.productService
+				.getProductsByManufacturer(manufacturer));
+		products.retainAll(this.productService.getProductsBypriceFilter(price));
+
+		model.addAttribute("products", products);
+		return "products";
+	}
+
 }

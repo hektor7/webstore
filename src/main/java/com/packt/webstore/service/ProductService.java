@@ -42,6 +42,20 @@ public interface ProductService {
 	 * @return a product
 	 */
 	public Product getProductById(String productId);
+	
+	/**
+	 * It obtains all products by a manufacturer
+	 * @param manufacturer
+	 * @return set of products
+	 */
+	public List<Product> getProductsByManufacturer(String manufacturer);
+	
+	/**
+	 * It returns all products by a price range
+	 * @param filterPrice low and high price filter
+	 * @return list of products
+	 */
+	public List<Product> getProductsBypriceFilter(Map<String, List<String>> filterPrice);
 
 	
 }
