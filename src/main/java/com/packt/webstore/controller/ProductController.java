@@ -75,26 +75,21 @@ public class ProductController {
 			@MatrixVariable(pathVar = "price") Map<String, List<String>> price,
 			@RequestParam("manufacturer") String manufacturer, Model model) {
 
-		// FIXME: Refactor: Altough this is the book's method, I think isn't a good way
+		// FIXME: Refactor: Altough this is the book's method, I think isn't a
+		// good way
 		List<Product> products = this.productService
 				.getProductsByCategory(category);
 		products.retainAll(this.productService.getProductsBypriceFilter(price));
 		products.retainAll(this.productService
 				.getProductsByManufacturer(manufacturer));
-		
 
 		model.addAttribute("products", products);
 		return "products";
 	}
-	
+
 	@RequestMapping(value = "/add", method = RequestMethod.GET)
-	public String getAddNewProductForm(Model model) {
-		/* We can avoid the following two lines
-		 * if we change the method in that way: 
-		 * getAddNewProductForm(@ModelAttribute("newProduct") Product newProduct)
-		 */
-		Product newProduct = new Product();
-		model.addAttribute("newProduct", newProduct); //Attach the object to the view.
+	public String getAddNewProductForm(
+			@ModelAttribute("newProduct") Product newProduct) {
 		return "addProduct";
 	}
 
