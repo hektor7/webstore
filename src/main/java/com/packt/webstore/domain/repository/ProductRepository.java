@@ -59,4 +59,11 @@ public interface ProductRepository {
 	 */
 	public List<Product> getProductsByPriceRange(Map<String, List<String>> filterPrice);
 	
+	/**
+	 * Method that allows to add a new product.
+	 * 
+	 * @param product new product
+	 */
+	public void addProduct(Product product);
+	
 }

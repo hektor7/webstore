@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.MatrixVariable;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.packt.webstore.domain.Product;
@@ -83,6 +85,24 @@ public class ProductController {
 
 		model.addAttribute("products", products);
 		return "products";
+	}
+	
+	@RequestMapping(value = "/add", method = RequestMethod.GET)
+	public String getAddNewProductForm(Model model) {
+		/* We can avoid the following two lines
+		 * if we change the method in that way: 
+		 * getAddNewProductForm(@ModelAttribute("newProduct") Product newProduct)
+		 */
+		Product newProduct = new Product();
+		model.addAttribute("newProduct", newProduct); //Attach the object to the view.
+		return "addProduct";
+	}
+
+	@RequestMapping(value = "/add", method = RequestMethod.POST)
+	public String processAddNewProductForm(
+			@ModelAttribute("newProduct") Product newProduct) {
+		productService.addProduct(newProduct);
+		return "redirect:/products";
 	}
 
 }

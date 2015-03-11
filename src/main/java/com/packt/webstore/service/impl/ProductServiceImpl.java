@@ -24,7 +24,7 @@ public class ProductServiceImpl implements ProductService {
 	public List<Product> getProductsByCategory(String category) {
 		return productRepository.getProductsByCategory(category);
 	}
-	
+
 	public Set<Product> getProductsByFilter(
 			Map<String, List<String>> filterParams) {
 		return this.productRepository.getProductsByFilter(filterParams);
@@ -38,8 +38,13 @@ public class ProductServiceImpl implements ProductService {
 		return this.productRepository.getProductsByManufacturer(manufacturer);
 	}
 
-	public List<Product> getProductsBypriceFilter(Map<String, List<String>> filterPrice) {
+	public List<Product> getProductsBypriceFilter(
+			Map<String, List<String>> filterPrice) {
 		return this.productRepository.getProductsByPriceRange(filterPrice);
+	}
+
+	public void addProduct(Product product) {
+		productRepository.addProduct(product);
 	}
 
 }

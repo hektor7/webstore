@@ -19,7 +19,7 @@ import com.packt.webstore.domain.repository.ProductRepository;
  * @author hector
  *
  */
-//TODO: Avoid all hardcoded params
+// TODO: Avoid all hardcoded params
 @Repository
 public class InMemoryProductRepository implements ProductRepository {
 
@@ -94,9 +94,9 @@ public class InMemoryProductRepository implements ProductRepository {
 
 		Set<Product> productsByBrand = new HashSet<Product>();
 		Set<Product> productsByCategory = new HashSet<Product>();
-		
+
 		Set<Product> finalProducts = new HashSet<Product>();
-		
+
 		Set<String> criterias = filterParams.keySet();
 
 		if (criterias.contains("brand")) {
@@ -114,32 +114,32 @@ public class InMemoryProductRepository implements ProductRepository {
 				productsByCategory.addAll(this.getProductsByCategory(category));
 			}
 		}
-		
+
 		finalProducts.addAll(productsByCategory);
 		finalProducts.retainAll(productsByBrand);
-		
+
 		return finalProducts;
 	}
-	
-	private List<Product> getProductsByPriceRange(
-			BigDecimal lowPrice, BigDecimal highPrice) {
-		
+
+	private List<Product> getProductsByPriceRange(BigDecimal lowPrice,
+			BigDecimal highPrice) {
+
 		List<Product> productsByPrice = new ArrayList<Product>();
-		
-		for (Product product:this.listOfProducts) {
-			if (lowPrice == null && highPrice == null)
-			{
-				productsByPrice.addAll(this.listOfProducts);//No filter
-				break; //to avoid to process the array
-			}else {
-				if ((lowPrice != null && product.getUnitPrice().compareTo(lowPrice)==1) ||
-						highPrice != null && product.getUnitPrice().compareTo(highPrice)==-1) {
+
+		for (Product product : this.listOfProducts) {
+			if (lowPrice == null && highPrice == null) {
+				productsByPrice.addAll(this.listOfProducts);// No filter
+				break; // to avoid to process the array
+			} else {
+				if ((lowPrice != null && product.getUnitPrice().compareTo(
+						lowPrice) == 1)
+						|| highPrice != null
+						&& product.getUnitPrice().compareTo(highPrice) == -1) {
 					productsByPrice.add(product);
 				}
 			}
 		}
-		
-		
+
 		return productsByPrice;
 	}
 
@@ -159,22 +159,23 @@ public class InMemoryProductRepository implements ProductRepository {
 			Map<String, List<String>> filterPrice) {
 		BigDecimal lowPrice = null;
 		BigDecimal highPrice = null;
-		
+
 		if (filterPrice.containsKey("low")) {
-			for (String low:filterPrice.get("low")) {
+			for (String low : filterPrice.get("low")) {
 				lowPrice = NumberUtils.parseNumber(low, BigDecimal.class);
 			}
 		}
 		if (filterPrice.containsKey("high")) {
-			for (String high:filterPrice.get("high")) {
+			for (String high : filterPrice.get("high")) {
 				highPrice = NumberUtils.parseNumber(high, BigDecimal.class);
 			}
 		}
-		
-		
+
 		return this.getProductsByPriceRange(lowPrice, highPrice);
 	}
-	
-	
-	
+
+	public void addProduct(Product product) {
+		listOfProducts.add(product);
+	}
+
 }
