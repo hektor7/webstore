@@ -76,25 +76,10 @@
 				</div>
 				
 				<div class="form-group">
-					<label class="control-label col-lg-2 col-lg-2" for="iUnitsInOrder">Units in order</label>
-					<div class="col-lg-10">
-						<form:input id="iUnitsInOrder" path="unitsInOrder" type="text"
-							class="form:input-large" />
-					</div>
-				</div>
-				
-				<div class="form-group">
 					<label class="control-label col-lg-2" for="description">Description</label>
 					<div class="col-lg-10">
 					<form:textarea id="description"
 						path="description" rows = "2"/></div>
-				</div>
-
-				<div class="form-group">
-					<label class="control-label col-lg-2" for="discontinued">Discontinued</label>
-					<div class="col-lg-10">
-						<form:checkbox id="discontinued" path="discontinued" />
-					</div>
 				</div>
 
 				<div class="form-group">
