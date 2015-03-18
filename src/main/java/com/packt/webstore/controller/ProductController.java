@@ -42,7 +42,7 @@ public class ProductController {
 		// binder.setDisallowedFields("unitsInOrder", "discontinued");
 		binder.setAllowedFields("productId", "name", "unitPrice",
 				"description", "manufacturer", "category", "unitsInStock",
-				"condition", "productImage");
+				"condition", "productImage", "productUserManual");
 	}
 
 	/*
@@ -125,12 +125,40 @@ public class ProductController {
 			HttpServletRequest request) {
 
 		this.saveProductImage(newProduct, request);
+		
+		this.saveUserManualPdf(newProduct, request);
 
 		this.productService.addProduct(newProduct);
 
 		this.checkForNonAllowedFieldsOnInsert(result);
 
 		return "redirect:/products";
+	}
+
+	/**
+	 * Method to save the product user's manual as multipart file.
+	 * 
+	 * @param newProduct from the form
+	 * @param request request
+	 */
+	private void saveUserManualPdf(Product newProduct,
+			HttpServletRequest request) {
+		MultipartFile productUserManual = newProduct.getProductUserManual();
+		String rootDirectory = request.getSession().getServletContext()
+				.getRealPath("/");
+
+		if (productUserManual != null && !productUserManual.isEmpty()) {
+			try {
+				// TODO: Refactor this
+				productUserManual.transferTo(new File(rootDirectory + File.separator
+						+ "resources" + File.separator + "pdf"
+						+ File.separator + newProduct.getProductId() + ".pdf"));
+
+			} catch (Exception e) {
+				throw new RuntimeException("Product user's manual saving failed", e);
+			}
+		}
+		
 	}
 
 	/**

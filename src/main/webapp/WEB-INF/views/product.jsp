@@ -48,7 +48,13 @@
 					${product.unitsInStock}
 				</p>
 				<h4>${product.unitPrice}USD</h4>
-
+				
+				<p>
+					<strong><a
+						href="<c:url value="/resource/pdf/${product.productId}.pdf"/>">
+							<spring:message code="product.details.productUserManual.label" />
+					</a></strong>
+				</p>
 				<p>
 					<a href="<spring:url value="/products" />" class="btn btn-default">
 						<span class="glyphicon-hand-left glyphicon"></span> <spring:message
