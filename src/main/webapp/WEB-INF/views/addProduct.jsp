@@ -20,13 +20,14 @@
 				</p>
 			</div>
 			<a href="<c:url value="/j_spring_security_logout" />"
-				class="btn btn-danger btn-mini pull-right">
-					<spring:message code="addProduct.logout" />
+				class="btn btn-danger btn-mini pull-right"> <spring:message
+					code="addProduct.logout" />
 			</a>
 		</div>
 	</section>
 	<section class="container">
-		<form:form modelAttribute="newProduct" class="form-horizontal">
+		<form:form modelAttribute="newProduct" class="form-horizontal"
+			enctype="multipart/form-data">
 			<fieldset>
 				<legend>Add new product</legend>
 
@@ -112,6 +113,14 @@
 						<spring:message code="addProduct.form.conditionOld.label" />
 						<form:radiobutton path="condition" value="Refurbished" />
 						<spring:message code="addProduct.form.conditionRefurbished.label" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-lg-2" for="productImage"><spring:message
+							code="addProdcut.form.productImage.label" /></label>
+					<div class="col-lg-10">
+						<form:input id="productImage" path="productImage" type="file"
+							class="form:input-large" />
 					</div>
 				</div>
 

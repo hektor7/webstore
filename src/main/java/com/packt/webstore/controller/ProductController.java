@@ -1,7 +1,10 @@
 package com.packt.webstore.controller;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.packt.webstore.domain.Product;
 import com.packt.webstore.service.ProductService;
@@ -35,16 +39,19 @@ public class ProductController {
 
 	@InitBinder
 	public void initialiseBinder(WebDataBinder binder) {
-		binder.setDisallowedFields("unitsInOrder", "discontinued");
+		// binder.setDisallowedFields("unitsInOrder", "discontinued");
+		binder.setAllowedFields("productId", "name", "unitPrice",
+				"description", "manufacturer", "category", "unitsInStock",
+				"condition", "productImage");
 	}
-	
-	/*Example of date converter
-	 * @InitBinder
-	   public void initialiseBinder (WebDataBinder binder) {
-	  	   DateFormat dateFormat = new SimpleDateFormat("MMM d, YYYY");
-	  	   CustomDateEditor orderDateEditor = new CustomDateEditor(dateFormat, true);
-	  	   binder.registerCustomEditor(Date.class, orderDateEditor);
-	   }
+
+	/*
+	 * Example of date converter
+	 * 
+	 * @InitBinder public void initialiseBinder (WebDataBinder binder) {
+	 * DateFormat dateFormat = new SimpleDateFormat("MMM d, YYYY");
+	 * CustomDateEditor orderDateEditor = new CustomDateEditor(dateFormat,
+	 * true); binder.registerCustomEditor(Date.class, orderDateEditor); }
 	 */
 
 	@RequestMapping
@@ -114,19 +121,49 @@ public class ProductController {
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public String processAddNewProductForm(
 			@ModelAttribute("newProduct") Product newProduct,
-			BindingResult result) { // For customize the WebDataBinder
-		productService.addProduct(newProduct);
-		
+			BindingResult result, // For customize the WebDataBinder
+			HttpServletRequest request) {
+
+		this.saveProductImage(newProduct, request);
+
+		this.productService.addProduct(newProduct);
+
 		this.checkForNonAllowedFieldsOnInsert(result);
-		
+
 		return "redirect:/products";
 	}
 
-	
+	/**
+	 * Method to save the product image as multipart file from the form.
+	 * 
+	 * @param newProduct
+	 *            from the form
+	 * @param request
+	 *            request.
+	 */
+	private void saveProductImage(Product newProduct, HttpServletRequest request) {
+		MultipartFile productImage = newProduct.getProductImage();
+		String rootDirectory = request.getSession().getServletContext()
+				.getRealPath("/");
+
+		if (productImage != null && !productImage.isEmpty()) {
+			try {
+				//TODO: Refactor this
+				productImage.transferTo(new File(rootDirectory + File.separator
+						+ "resources" + File.separator + "images"
+						+ File.separator + newProduct.getProductId() + ".png"));
+
+			} catch (Exception e) {
+				throw new RuntimeException("Product Image saving failed", e);
+			}
+		}
+	}
+
 	/**
 	 * Check for non allowed fields on insert.
 	 * 
-	 * @param result Binding result
+	 * @param result
+	 *            Binding result
 	 */
 	private void checkForNonAllowedFieldsOnInsert(BindingResult result) {
 		String[] suppressedFields = result.getSuppressedFields();
