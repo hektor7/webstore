@@ -12,6 +12,7 @@ import org.springframework.util.NumberUtils;
 
 import com.packt.webstore.domain.Product;
 import com.packt.webstore.domain.repository.ProductRepository;
+import com.packt.webstore.exception.ProductNotFoundException;
 
 /**
  * Dummy class to simulate the retrieving data from database.
@@ -70,7 +71,7 @@ public class InMemoryProductRepository implements ProductRepository {
 		}
 
 		if (productById == null) {
-			throw new IllegalArgumentException(
+			throw new ProductNotFoundException(
 					"No products found with the product id: " + productId);
 		}
 

@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.MatrixVariable;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -20,8 +21,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.packt.webstore.domain.Product;
+import com.packt.webstore.exception.NoProductsFoundUnderCategoryException;
+import com.packt.webstore.exception.ProductNotFoundException;
 import com.packt.webstore.service.ProductService;
 
 /**
@@ -71,8 +75,13 @@ public class ProductController {
 	public String getProductsByCategory(Model model,
 			@PathVariable("category") String productCategory) {
 
-		model.addAttribute("products",
-				productService.getProductsByCategory(productCategory));
+		List<Product> products = productService.getProductsByCategory(productCategory);
+		
+		if (products == null || products.isEmpty()) {
+			throw new NoProductsFoundUnderCategoryException();
+		}
+		
+		model.addAttribute("products",products);
 
 		return "products";
 	}
@@ -91,7 +100,10 @@ public class ProductController {
 	@RequestMapping("/product")
 	public String getProductById(@RequestParam("id") String productId,
 			Model model) {
-		model.addAttribute("product", productService.getProductById(productId));
+		//The service's method throws a non-checked exception that will be 
+		//handled by the handleError method.
+		model.addAttribute("product", productService.getProductById(productId)); 
+		 
 		return "product";
 	}
 
@@ -238,6 +250,17 @@ public class ProductController {
 			throw new RuntimeException("Attempting to bind disallowed fields: "
 					+ StringUtils.arrayToCommaDelimitedString(suppressedFields));
 		}
+	}
+	
+	@ExceptionHandler(ProductNotFoundException.class)
+	public ModelAndView handleError(HttpServletRequest req,
+			ProductNotFoundException exception) {
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("invalidProductId", exception.getProductId());
+		mav.addObject("exception", exception);
+		mav.addObject("url", req.getRequestURL() + "?" + req.getQueryString());
+		mav.setViewName("productNotFound");
+		return mav;
 	}
 
 }
