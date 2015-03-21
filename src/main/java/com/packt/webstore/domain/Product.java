@@ -6,6 +6,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class Product {
 
+	public static final String PDF_MANUAL = "pdf";
+	public static final String IMAGE = "images";
 	private String productId;
 	private String name;
 	private BigDecimal unitPrice;

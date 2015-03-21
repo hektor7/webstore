@@ -128,9 +128,9 @@ public class ProductController {
 		
 		this.saveUserManualPdf(newProduct, request);
 
-		this.productService.addProduct(newProduct);
-
 		this.checkForNonAllowedFieldsOnInsert(result);
+		
+		this.productService.addProduct(newProduct);
 
 		return "redirect:/products";
 	}
@@ -144,21 +144,64 @@ public class ProductController {
 	private void saveUserManualPdf(Product newProduct,
 			HttpServletRequest request) {
 		MultipartFile productUserManual = newProduct.getProductUserManual();
-		String rootDirectory = request.getSession().getServletContext()
-				.getRealPath("/");
+		
 
 		if (productUserManual != null && !productUserManual.isEmpty()) {
 			try {
-				// TODO: Refactor this
-				productUserManual.transferTo(new File(rootDirectory + File.separator
-						+ "resources" + File.separator + "pdf"
-						+ File.separator + newProduct.getProductId() + ".pdf"));
+				productUserManual.transferTo(new File(this
+						.buildProductFilePath(newProduct, request,
+								Product.PDF_MANUAL)));
 
 			} catch (Exception e) {
 				throw new RuntimeException("Product user's manual saving failed", e);
 			}
 		}
 		
+	}
+
+	/**
+	 * This method creates a path for read or write resources.
+	 * TODO: Move this method to a file service.
+	 * 
+	 * @param newProduct
+	 * 			Product
+	 * @param request
+	 * 			Request
+	 * @param fileType
+	 * 			Filetype of the file
+	 * @return string with the path
+	 */
+	private String buildProductFilePath(Product newProduct, HttpServletRequest request, String fileType) {
+		
+		StringBuilder path = new StringBuilder();
+		path.append(request.getSession().getServletContext().getRealPath("/"));
+		path.append(File.separator);
+		path.append("resources");
+		path.append(File.separator);
+		path.append(fileType);
+		path.append(File.separator);
+		path.append(newProduct.getProductId());
+		path.append(this.fileTypeToExtension(fileType));
+		
+		return path.toString();
+	}
+
+	/**
+	 * Returns a extension for a file type.
+	 * TODO: Move this method to a file service.
+	 * 
+	 * @param fileType file type
+	 * @return string with extension
+	 */
+	
+	private String fileTypeToExtension(String fileType) {
+		String extension = "";
+		if (Product.PDF_MANUAL.equals(fileType)) {
+			extension = ".pdf";
+		}else if (Product.IMAGE.equals(fileType)) {
+			extension = ".png";
+		}
+		return extension;
 	}
 
 	/**
@@ -171,15 +214,11 @@ public class ProductController {
 	 */
 	private void saveProductImage(Product newProduct, HttpServletRequest request) {
 		MultipartFile productImage = newProduct.getProductImage();
-		String rootDirectory = request.getSession().getServletContext()
-				.getRealPath("/");
 
 		if (productImage != null && !productImage.isEmpty()) {
 			try {
-				//TODO: Refactor this
-				productImage.transferTo(new File(rootDirectory + File.separator
-						+ "resources" + File.separator + "images"
-						+ File.separator + newProduct.getProductId() + ".png"));
+				productImage.transferTo(new File(this.buildProductFilePath(
+						newProduct, request, Product.IMAGE)));
 
 			} catch (Exception e) {
 				throw new RuntimeException("Product Image saving failed", e);
