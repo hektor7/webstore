@@ -17,6 +17,16 @@
 				</h1>
 			</div>
 		</div>
+		<div class="pull-right" style="padding-right: 50px">
+
+			<a href="<spring:url value="/products/product?id=${product.productId}&language=en" htmlEscape="true"/>"> 
+				<spring:message code="languages.english.label" />
+			</a> | 
+			<a href="<spring:url value="/products/product?id=${product.productId}&language=es" htmlEscape="true"/>">
+			 
+				<spring:message code="languages.spanish.label" />
+			</a>
+		</div>
 	</section>
 	<section class="container">
 		<div class="row">
@@ -48,7 +58,7 @@
 					${product.unitsInStock}
 				</p>
 				<h4>${product.unitPrice}USD</h4>
-				
+
 				<p>
 					<strong><a
 						href="<c:url value="/resource/pdf/${product.productId}.pdf"/>">

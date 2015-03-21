@@ -20,6 +20,13 @@
 				</p>
 			</div>
 		</div>
+		<div class="pull-right" style="padding-right: 50px">
+			<a href="?language=en"> <spring:message
+					code="languages.english.label" />
+			</a>| <a href="?language=es"> <spring:message
+					code="languages.spanish.label" />
+			</a>
+		</div>
 	</section>
 
 	<section class="container">

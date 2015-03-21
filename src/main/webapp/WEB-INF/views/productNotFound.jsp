@@ -18,6 +18,13 @@
 				</h1>
 			</div>
 		</div>
+		<div class="pull-right" style="padding-right: 50px">
+			<a href="?language=en"> <spring:message
+					code="languages.english.label" />
+			</a>| <a href="?language=es"> <spring:message
+					code="languages.spanish.label" />
+			</a>
+		</div>
 	</section>
 
 	<section>
@@ -29,7 +36,8 @@
 		<div class="container">
 			<p>
 				<a href="<spring:url value="/products" />" class="btn btn-primary">
-					<span class="glyphicon-hand-left glyphicon"></span> <spring:message code="productNotFound.detail.products" />
+					<span class="glyphicon-hand-left glyphicon"></span> <spring:message
+						code="productNotFound.detail.products" />
 				</a>
 			</p>
 		</div>

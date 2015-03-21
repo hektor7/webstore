@@ -23,13 +23,22 @@
 				class="btn btn-danger btn-mini pull-right"> <spring:message
 					code="addProduct.logout" />
 			</a>
+			<div class="pull-right" style="padding-right: 50px">
+				<a href="?language=en">
+					<spring:message code="languages.english.label" />
+				</a>|
+				<a href="?language=es">
+					<spring:message code="languages.spanish.label" />
+				</a>
+			</div>
 		</div>
 	</section>
 	<section class="container">
 		<form:form modelAttribute="newProduct" class="form-horizontal"
 			enctype="multipart/form-data">
 			<fieldset>
-				<legend>Add new product</legend>
+				<legend><spring:message
+						code="addProduct.form.formTitle"/></legend>
 
 				<div class="form-group">
 					<label class="control-label col-lg-2 col-lg-2" for="productId">
@@ -123,13 +132,13 @@
 							class="form:input-large" />
 					</div>
 				</div>
-				
+
 				<div class="form-group">
 					<label class="control-label col-lg-2" for="productUserManual"><spring:message
 							code="addProdcut.form.productUserManual.label" /></label>
 					<div class="col-lg-10">
-						<form:input id="productUserManual" path="productUserManual" type="file"
-							class="form:input-large" />
+						<form:input id="productUserManual" path="productUserManual"
+							type="file" class="form:input-large" />
 					</div>
 				</div>
 
