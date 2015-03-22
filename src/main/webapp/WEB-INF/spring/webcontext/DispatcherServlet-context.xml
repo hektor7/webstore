@@ -16,7 +16,13 @@
 		<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
 			<property name="paramName" value="language" />
 		</bean>
-		<bean class= "com.packt.webstore.interceptor.AuditingInterceptor"/>
+		<bean class="com.packt.webstore.interceptor.AuditingInterceptor" />
+
+		<bean class="com.packt.webstore.interceptor.PromoCodeInterceptor">
+			<property name="promoCode" value="OFF3R" />
+			<property name="errorRedirect" value="invalidPromoCode" />
+			<property name="offerRedirect" value="products" />
+		</bean>
 	</mvc:interceptors>
 
 	<bean
@@ -28,7 +34,7 @@
 	<bean id="messageSource"
 		class="org.springframework.context.support.ResourceBundleMessageSource">
 		<property name="basename" value="messages" />
-		<property name="fallbackToSystemLocale" value="false"/> <!-- For i18n configuration -->
+		<property name="fallbackToSystemLocale" value="false" /> <!-- For i18n configuration -->
 	</bean>
 
 	<bean id="multipartResolver"
