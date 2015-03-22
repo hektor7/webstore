@@ -36,6 +36,7 @@
 	<section class="container">
 		<form:form modelAttribute="newProduct" class="form-horizontal"
 			enctype="multipart/form-data">
+			<form:errors path="*" cssClass="alert alert-danger" element="div"/>
 			<fieldset>
 				<legend><spring:message
 						code="addProduct.form.formTitle"/></legend>
@@ -47,6 +48,7 @@
 					<div class="col-lg-10">
 						<form:input id="productId" path="productId" type="text"
 							class="form:input-large" />
+						<form:errors path="productId" cssClass="text-danger"/>
 					</div>
 				</div>
 
@@ -59,6 +61,7 @@
 					<div class="col-lg-10">
 						<form:input id="iName" path="name" type="text"
 							class="form:input-large" />
+						<form:errors path="name" cssClass="text-danger"/>
 					</div>
 				</div>
 
@@ -69,6 +72,7 @@
 					<div class="col-lg-10">
 						<form:input id="iUnitPrice" path="unitPrice" type="text"
 							class="form:input-large" />
+						<form:errors path="unitPrice" cssClass="text-danger"/>
 					</div>
 				</div>
 

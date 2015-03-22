@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -75,13 +76,14 @@ public class ProductController {
 	public String getProductsByCategory(Model model,
 			@PathVariable("category") String productCategory) {
 
-		List<Product> products = productService.getProductsByCategory(productCategory);
-		
+		List<Product> products = productService
+				.getProductsByCategory(productCategory);
+
 		if (products == null || products.isEmpty()) {
 			throw new NoProductsFoundUnderCategoryException();
 		}
-		
-		model.addAttribute("products",products);
+
+		model.addAttribute("products", products);
 
 		return "products";
 	}
@@ -100,10 +102,10 @@ public class ProductController {
 	@RequestMapping("/product")
 	public String getProductById(@RequestParam("id") String productId,
 			Model model) {
-		//The service's method throws a non-checked exception that will be 
-		//handled by the handleError method.
-		model.addAttribute("product", productService.getProductById(productId)); 
-		 
+		// The service's method throws a non-checked exception that will be
+		// handled by the handleError method.
+		model.addAttribute("product", productService.getProductById(productId));
+
 		return "product";
 	}
 
@@ -132,16 +134,20 @@ public class ProductController {
 
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public String processAddNewProductForm(
-			@ModelAttribute("newProduct") Product newProduct,
+			@ModelAttribute("newProduct") @Valid Product newProduct,
 			BindingResult result, // For customize the WebDataBinder
 			HttpServletRequest request) {
 
+		if (result.hasErrors()) {
+			return "addProduct";
+		}
+
 		this.saveProductImage(newProduct, request);
-		
+
 		this.saveUserManualPdf(newProduct, request);
 
 		this.checkForNonAllowedFieldsOnInsert(result);
-		
+
 		this.productService.addProduct(newProduct);
 
 		return "redirect:/products";
@@ -150,13 +156,14 @@ public class ProductController {
 	/**
 	 * Method to save the product user's manual as multipart file.
 	 * 
-	 * @param newProduct from the form
-	 * @param request request
+	 * @param newProduct
+	 *            from the form
+	 * @param request
+	 *            request
 	 */
 	private void saveUserManualPdf(Product newProduct,
 			HttpServletRequest request) {
 		MultipartFile productUserManual = newProduct.getProductUserManual();
-		
 
 		if (productUserManual != null && !productUserManual.isEmpty()) {
 			try {
@@ -165,26 +172,28 @@ public class ProductController {
 								Product.PDF_MANUAL)));
 
 			} catch (Exception e) {
-				throw new RuntimeException("Product user's manual saving failed", e);
+				throw new RuntimeException(
+						"Product user's manual saving failed", e);
 			}
 		}
-		
+
 	}
 
 	/**
-	 * This method creates a path for read or write resources.
-	 * TODO: Move this method to a file service.
+	 * This method creates a path for read or write resources. TODO: Move this
+	 * method to a file service.
 	 * 
 	 * @param newProduct
-	 * 			Product
+	 *            Product
 	 * @param request
-	 * 			Request
+	 *            Request
 	 * @param fileType
-	 * 			Filetype of the file
+	 *            Filetype of the file
 	 * @return string with the path
 	 */
-	private String buildProductFilePath(Product newProduct, HttpServletRequest request, String fileType) {
-		
+	private String buildProductFilePath(Product newProduct,
+			HttpServletRequest request, String fileType) {
+
 		StringBuilder path = new StringBuilder();
 		path.append(request.getSession().getServletContext().getRealPath("/"));
 		path.append(File.separator);
@@ -194,23 +203,24 @@ public class ProductController {
 		path.append(File.separator);
 		path.append(newProduct.getProductId());
 		path.append(this.fileTypeToExtension(fileType));
-		
+
 		return path.toString();
 	}
 
 	/**
-	 * Returns a extension for a file type.
-	 * TODO: Move this method to a file service.
+	 * Returns a extension for a file type. TODO: Move this method to a file
+	 * service.
 	 * 
-	 * @param fileType file type
+	 * @param fileType
+	 *            file type
 	 * @return string with extension
 	 */
-	
+
 	private String fileTypeToExtension(String fileType) {
 		String extension = "";
 		if (Product.PDF_MANUAL.equals(fileType)) {
 			extension = ".pdf";
-		}else if (Product.IMAGE.equals(fileType)) {
+		} else if (Product.IMAGE.equals(fileType)) {
 			extension = ".png";
 		}
 		return extension;
@@ -251,7 +261,7 @@ public class ProductController {
 					+ StringUtils.arrayToCommaDelimitedString(suppressedFields));
 		}
 	}
-	
+
 	@ExceptionHandler(ProductNotFoundException.class)
 	public ModelAndView handleError(HttpServletRequest req,
 			ProductNotFoundException exception) {
@@ -262,7 +272,7 @@ public class ProductController {
 		mav.setViewName("productNotFound");
 		return mav;
 	}
-	
+
 	@RequestMapping("/invalidPromoCode")
 	public String invalidPromoCode() {
 		return "invalidPromoCode";
