@@ -11,6 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.web.multipart.MultipartFile;
 
 @XmlRootElement
@@ -25,14 +26,18 @@ public class Product {
 	@Size(min = 4, max = 50, message = "{Size.Product.name.validation}")
 	private String name;
 
-	@Min(value = 0, message = "Min.Product.unitPrice.validation}")
+	@Min(value = 0, message = "{Min.Product.unitPrice.validation}")
 	@Digits(integer = 8, fraction = 2, message = "{Digits.Product.unitPrice.validation}")
 	@NotNull(message = "{NotNull.Product.unitPrice.validation}")
 	private BigDecimal unitPrice;
 	
 	private String description;
 	private String manufacturer;
+	
+	@NotEmpty(message = "{NotEmpty.Product.category.validation}")
 	private String category;
+	
+	@Min(value = 0, message = "{Min.Product.unitsInStock.validation}")
 	private long unitsInStock;
 	private long unitsInOrder;
 	private boolean discontinued;
