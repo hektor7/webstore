@@ -14,6 +14,8 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.packt.webstore.validator.ProductId;
+
 @XmlRootElement
 public class Product {
 
@@ -21,6 +23,7 @@ public class Product {
 	public static final String IMAGE = "images";
 
 	@Pattern(regexp = "P[0-9]+", message = "{Pattern.Product.productId.validation}")
+	@ProductId
 	private String productId;
 
 	@Size(min = 4, max = 50, message = "{Size.Product.name.validation}")
