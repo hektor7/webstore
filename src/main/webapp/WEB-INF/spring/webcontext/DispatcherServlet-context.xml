@@ -7,7 +7,8 @@
     http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
 
 
-	<mvc:annotation-driven enable-matrix-variables="true" validator="validator"/>
+	<mvc:annotation-driven enable-matrix-variables="true"
+		validator="validator" />
 	<context:component-scan base-package="com.packt.webstore" />
 	<mvc:resources location="/resources/" mapping="/resource/**" />
 
@@ -87,6 +88,19 @@
 		<property name="validationMessageSource" ref="messageSource" />
 	</bean>
 	<!-- END Bean validation support -->
+
+	<!-- Custom Product Validation (Spring & Bean Validation) -->
+	<bean id="productValidator" class="com.packt.webstore.validator.ProductValidator">
+		<property name="springValidators">
+			<set>
+				<ref bean="unitsInStockValidator" />
+				<ref bean="productImageValidator" />
+			</set>
+		</property>
+	</bean>
+	<bean id="unitsInStockValidator" class="com.packt.webstore.validator.UnitsInStockValidator" />
+	<bean id="productImageValidator" class="com.packt.webstore.validator.ProductImageValidator" />
+	<!-- END Custom Product Validation (Spring & Bean Validation) -->
 
 
 </beans>
