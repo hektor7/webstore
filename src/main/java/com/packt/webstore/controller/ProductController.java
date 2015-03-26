@@ -28,6 +28,7 @@ import com.packt.webstore.domain.Product;
 import com.packt.webstore.exception.NoProductsFoundUnderCategoryException;
 import com.packt.webstore.exception.ProductNotFoundException;
 import com.packt.webstore.service.ProductService;
+import com.packt.webstore.validator.UnitsInStockValidator;
 
 /**
  * Product controller
@@ -41,6 +42,9 @@ public class ProductController {
 
 	@Autowired
 	private ProductService productService;
+	
+	@Autowired
+	private UnitsInStockValidator unitsInStockValidator;
 
 	@InitBinder
 	public void initialiseBinder(WebDataBinder binder) {
@@ -48,6 +52,8 @@ public class ProductController {
 		binder.setAllowedFields("productId", "name", "unitPrice",
 				"description", "manufacturer", "category", "unitsInStock",
 				"condition", "productImage", "productUserManual", "language");
+		
+		binder.setValidator(unitsInStockValidator); 
 	}
 
 	/*
