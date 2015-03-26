@@ -12,10 +12,10 @@ import javax.validation.Payload;
 
 @Target({ METHOD, FIELD, ANNOTATION_TYPE }) // Target where the annotation would be used.
 @Retention(RUNTIME) // Scope of the annotation
-@Constraint(validatedBy = ProductIdValidator.class) // It defines a validator
+@Constraint(validatedBy = CategoryValidator.class) // It defines a validator
 @Documented // For processing of JavaDoc documentation.
-public @interface ProductId {
-	String message() default "{com.packt.webstore.validator.ProductId.message}";
+public @interface Category {
+	String message() default "{com.packt.webstore.validator.Category.message}";
 
 	Class<?>[] groups() default {};
 
