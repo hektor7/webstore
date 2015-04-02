@@ -7,6 +7,11 @@
 <link rel="stylesheet"
 	href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
 <title><spring:message code="product.details.windowTitle" /></title>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.1/angular.min.js">
+	
+</script>
+<script src="/webstore/resource/js/controllers.js"></script>
 </head>
 <body>
 	<section>
@@ -19,16 +24,17 @@
 		</div>
 		<div class="pull-right" style="padding-right: 50px">
 
-			<a href="<spring:url value="/products/product?id=${product.productId}&language=en" htmlEscape="true"/>"> 
+			<a
+				href="<spring:url value="/products/product?id=${product.productId}&language=en" htmlEscape="true"/>">
 				<spring:message code="languages.english.label" />
-			</a> | 
-			<a href="<spring:url value="/products/product?id=${product.productId}&language=es" htmlEscape="true"/>">
-			 
+			</a> | <a
+				href="<spring:url value="/products/product?id=${product.productId}&language=es" htmlEscape="true"/>">
+
 				<spring:message code="languages.spanish.label" />
 			</a>
 		</div>
 	</section>
-	<section class="container">
+	<section class="container" ng-app="cartApp">
 		<div class="row">
 			<div class="col-md-5">
 				<img
@@ -65,13 +71,19 @@
 							<spring:message code="product.details.productUserManual.label" />
 					</a></strong>
 				</p>
-				<p>
+				<p ng-controller="cartCtrl">
 					<a href="<spring:url value="/products" />" class="btn btn-default">
 						<span class="glyphicon-hand-left glyphicon"></span> <spring:message
 							code="product.details.back" />
-					</a> <a href="#" class="btn btn-warning btn-large"> <span
+					</a> 
+					<a href="#" class="btn btn-warning btn-large" ng-click="addToCart('${product.productId}')"> 
+					<span
 						class="glyphicon-shopping-cart glyphicon"></span> <spring:message
 							code="product.details.orderNow" />
+					</a>
+					<a href="<spring:url value="/cart" />" class="btn btn-default">
+					  <span class="glyphicon-hand-right glyphicon"></span> <spring:message
+							code="product.details.viewCart" />
 					</a>
 				</p>
 			</div>
