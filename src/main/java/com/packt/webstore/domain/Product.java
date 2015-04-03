@@ -1,5 +1,6 @@
 package com.packt.webstore.domain;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 import javax.validation.constraints.Digits;
@@ -18,8 +19,10 @@ import com.packt.webstore.validator.Category;
 import com.packt.webstore.validator.ProductId;
 
 @XmlRootElement
-public class Product {
+public class Product implements Serializable{
 
+	private static final long serialVersionUID = -7660093159552559032L;
+	
 	public static final String PDF_MANUAL = "pdf";
 	public static final String IMAGE = "images";
 
