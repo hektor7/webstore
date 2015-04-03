@@ -1,17 +1,32 @@
 package com.packt.webstore.domain;
 
+import java.io.Serializable;
+
 /**
  * Customer entity
  * 
  * @author hector
  *
  */
-public class Customer {
+public class Customer implements Serializable {
+
+	private static final long serialVersionUID = -3031369719693432133L;
 
 	private String customerId;
 	private String name;
-	private String address;
-	private long noOfOrdersMade;
+	private Address billingAddress;
+	private String phoneNumber;
+
+	public Customer() {
+		super();
+		this.billingAddress = new Address();
+	}
+
+	public Customer(String customerId, String name) {
+		this();
+		this.customerId = customerId;
+		this.name = name;
+	}
 
 	public String getCustomerId() {
 		return customerId;
@@ -29,20 +44,20 @@ public class Customer {
 		this.name = name;
 	}
 
-	public String getAddress() {
-		return address;
+	public Address getBillingAddress() {
+		return billingAddress;
 	}
 
-	public void setAddress(String address) {
-		this.address = address;
+	public void setBillingAddress(Address billingAddress) {
+		this.billingAddress = billingAddress;
 	}
 
-	public long getNoOfOrdersMade() {
-		return noOfOrdersMade;
+	public String getPhoneNumber() {
+		return phoneNumber;
 	}
 
-	public void setNoOfOrdersMade(long noOfOrdersMade) {
-		this.noOfOrdersMade = noOfOrdersMade;
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
 	}
 
 	@Override
@@ -74,7 +89,8 @@ public class Customer {
 	@Override
 	public String toString() {
 		return "Customer [customerId=" + customerId + ", name=" + name
-				+ ", noOfOrdersMade=" + noOfOrdersMade + "]";
+				+ ", billingAddress=" + billingAddress + ", phoneNumber="
+				+ phoneNumber + "]";
 	}
 
 }

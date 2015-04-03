@@ -40,12 +40,8 @@
 								${customer.name}
 							</h3>
 							<p>
-								<spring:message code="customers.list.address.label" />
-								${customer.address}
-							</p>
-							<p>
-								<spring:message code="customers.list.noOfOrdersMade.label" />
-								${customer.noOfOrdersMade}
+								<spring:message code="customers.list.phoneNumber.label" />
+								${customer.phoneNumber}
 							</p>
 						</div>
 					</div>
