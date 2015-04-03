@@ -45,5 +45,13 @@ public interface CartService {
 	 *            cart id
 	 */
 	public void delete(String cartId);
+	
+	/**
+	 * It validates a cart with the given id.
+	 * 
+	 * @param cartId id whose cart will be validated.
+	 * @return validated cart.
+	 */
+	public Cart validate(String cartId);
 
 }

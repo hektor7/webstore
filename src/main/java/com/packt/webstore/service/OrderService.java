@@ -1,5 +1,7 @@
 package com.packt.webstore.service;
 
+import com.packt.webstore.domain.Order;
+
 /**
  * Order Service
  * 
@@ -16,5 +18,13 @@ public interface OrderService {
 	 * @param count number of products
 	 */
 	public void processOrder(String productId, int count);
+	
+	/**
+	 * It allow to save an order.
+	 * 
+	 * @param order to be saved.
+	 * @return a order number
+	 */
+	public Long saveOrder(Order order);
 
 }
