@@ -27,10 +27,14 @@
 		<div ng-controller="cartCtrl" ng-init="initCartId('${cartId}')">
 
 			<div>
-				<a class="btn btn-danger pull-left" ng-click="clearCart()"> <span
-					class="glyphicon glyphicon-remove-sign"></span> Clear Cart
-				</a> <a href="#" class="btn btn-success pull-right"> <span
-					class="glyphicon-shopping-cart glyphicon"></span> Check out
+				<a class="btn btn-danger pull-left" ng-click="clearCart()"> 
+					<span class="glyphicon glyphicon-remove-sign"></span> 
+					<spring:message code="cart.list.clearCart.label"/>
+				</a> 
+				<a href="<spring:url value="/checkout?cartId=${cartId}"/>" 
+					class="btn btn-success pull-right"> 
+					<span class="glyphicon-shopping-cart glyphicon"></span> 
+					<spring:message code="cart.list.checkout.label"/>
 				</a>
 			</div>
 			<table class="table table-hover">
@@ -48,7 +52,7 @@
 					<td>{{item.totalPrice}}</td>
 					<td><a href="#" class="label label-danger"
 						ng-click="removeFromCart(item.product.productId)"> <span
-							class="glyphicon glyphicon-remove" /></span> Remove
+							class="glyphicon glyphicon-remove" /></span> <spring:message code="cart.list.remove.label"/>
 					</a></td>
 				</tr>
 				<tr>
