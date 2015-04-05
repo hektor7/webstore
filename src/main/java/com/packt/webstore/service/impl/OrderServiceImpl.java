@@ -8,6 +8,7 @@ import com.packt.webstore.domain.Product;
 import com.packt.webstore.domain.repository.OrderRepository;
 import com.packt.webstore.domain.repository.ProductRepository;
 import com.packt.webstore.service.CartService;
+import com.packt.webstore.service.CustomerService;
 import com.packt.webstore.service.OrderService;
 
 @Service
@@ -21,6 +22,9 @@ public class OrderServiceImpl implements OrderService {
 
 	@Autowired
 	private CartService cartService;
+	
+	@Autowired
+	private CustomerService customerService;
 
 	public void processOrder(String productId, int quantity) {
 		Product productById = this.productRepository.getProductById(productId);
@@ -34,9 +38,13 @@ public class OrderServiceImpl implements OrderService {
 		productById.setUnitsInStock(productById.getUnitsInStock() - quantity);
 	}
 
+	//TODO: Improve this method. It isn't using a good way.
 	@Override
 	public Long saveOrder(Order order) {
-		Long orderId = orderRepository.saveOrder(order);
+		Long orderId = this.orderRepository.saveOrder(order);
+		if (this.customerService.isCustomerExist(order.getCustomer().getCustomerId())) {
+			this.customerService.saveCustomer(order.getCustomer());
+		}
 		cartService.delete(order.getCart().getCartId());
 		return orderId;
 	}
