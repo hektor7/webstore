@@ -5,10 +5,12 @@ import java.util.List;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import com.packt.webstore.domain.Address;
 import com.packt.webstore.domain.Customer;
 import com.packt.webstore.domain.repository.CustomerRepository;
+import com.packt.webstore.exception.CustomerNotFoundException;
 
 /**
  * Dummy class to simulate the retrieving data from database.
@@ -51,12 +53,52 @@ public class InMemoryCustomerRepository implements CustomerRepository {
 		newAddress.setState(RandomStringUtils.randomAlphabetic(5));
 		newAddress.setStreetName(RandomStringUtils.randomAlphabetic(20));
 		newAddress.setZipCode(RandomStringUtils.randomNumeric(5));
-		
+
 		return newAddress;
 	}
 
 	public List<Customer> getAllCustomers() {
 		return this.listOfCustomers;
+	}
+
+	@Override
+	public void addCustomer(Customer customer) {
+		this.listOfCustomers.add(customer);
+
+	}
+
+	@Override
+	public Customer getCustomer(String customerId) {
+		Customer customerById = null;
+
+		for (Customer customer : this.listOfCustomers) {
+			if (customer != null
+					&& !StringUtils.isEmpty(customer.getCustomerId())
+					&& customer.getCustomerId().equals(customerId)) {
+				customerById = customer;
+				break;
+			}
+		}
+
+		if (customerById == null) {
+			throw new CustomerNotFoundException(
+					"No customers found with the id: " + customerId);
+		}
+
+		return customerById;
+	}
+
+	@Override
+	public Boolean isCustomerExist(String customerId) {
+		Boolean exists = true;
+
+		try {
+			this.getCustomer(customerId);
+		} catch (CustomerNotFoundException e) {
+			exists = false;
+		}
+
+		return exists;
 	}
 
 }
