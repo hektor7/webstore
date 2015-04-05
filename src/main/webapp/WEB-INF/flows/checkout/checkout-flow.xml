@@ -11,14 +11,30 @@ http://www.springframework.org/schema/webflow/spring-webflow.xsd">
 			result="order.cart" />
 		<transition to="InvalidCartWarning"
 			on-exception="com.packt.webstore.exception.InvalidCartException" />
-		<transition to="collectCustomerInfo" />
+		<transition to="collectCustomerId" />
 	</action-state>
-
+	
+	<view-state id="collectCustomerId" model="order">
+		<transition on="customerIdCollected" to="customerIdAction" />
+	</view-state>
+	
+	<action-state id="customerIdAction">
+		<evaluate expression="customerServiceImpl.getCustomer(order.customer.customerId)" 
+		result="order.customer" />
+		<transition to="checkCustomerExist" />
+	</action-state>
+	
+	<decision-state id="checkCustomerExist">
+		<if test="customerServiceImpl.isCustomerExist(order.customer.customerId)"
+		then="collectShippingDetail"
+		else="collectCustomerInfo"/>
+	</decision-state>
+	
 	<view-state id="collectCustomerInfo" view="collectCustomerInfo.jsp"
 		model="order">
 		<transition on="customerInfoCollected" to="collectShippingDetail" />
 	</view-state>
-
+	
 	<view-state id="collectShippingDetail" model="order">
 		<transition on="shippingDetailCollected" to="orderConfirmation" />
 		<transition on="backToCollectCustomerInfo" to="collectCustomerInfo" />
